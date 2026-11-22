@@ -1,3 +1,5 @@
+[![Validate KQL Detection Rules](https://github.com)](https://github.com)
+
 # Microsoft Sentinel KQL Threat-Hunting & Endpoint Compliance Pack
 
 A curated collection of production-ready **Kusto Query Language (KQL)** detection rules and compliance audits mapped to **MITRE ATT&CK**, covering Microsoft Entra ID identity attacks, Intune endpoint compliance drift, and Linux SSH authentication telemetry—paired with a Python CI metadata validator.
