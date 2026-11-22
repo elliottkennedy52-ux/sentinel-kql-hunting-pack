@@ -1,4 +1,4 @@
-[![Validate KQL Detection Rules](https://github.com)](https://github.com)
+[![Validate KQL Detection Rules](https://github.com/elliottkennedy52-ux/sentinel-kql-hunting-pack/actions/workflows/validate-kql.yml/badge.svg)](https://github.com/elliottkennedy52-ux/sentinel-kql-hunting-pack/actions/workflows/validate-kql.yml)
 
 # Microsoft Sentinel KQL Threat-Hunting & Endpoint Compliance Pack
 
