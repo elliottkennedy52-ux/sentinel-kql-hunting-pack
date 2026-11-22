@@ -1,0 +1,20 @@
+// Title: Linux Host SSH Brute-Force Followed by Successful Logon
+// MITRE ATT&CK: T1110 (Brute Force), T1078 (Valid Accounts)
+// Data Source: Syslog
+let timeframe = 24h;
+let failed_ips = Syslog
+| where TimeGenerated >= ago(timeframe)
+| where Facility == "auth" or Facility == "authpriv"
+| where SyslogMessage has "Failed password"
+| extend SourceIP = extract(@"from (\d+\.\d+\.\d+\.\d+)", 1, SyslogMessage)
+| where isnotempty(SourceIP)
+| summarize FailedCount = count() by SourceIP, Computer
+| where FailedCount >= 5;
+Syslog
+| where TimeGenerated >= ago(timeframe)
+| where SyslogMessage has "Accepted"
+| extend SourceIP = extract(@"from (\d+\.\d+\.\d+\.\d+)", 1, SyslogMessage)
+| extend AcceptedUser = extract(@"Accepted \S+ for (\S+)", 1, SyslogMessage)
+| join kind=inner failed_ips on SourceIP, Computer
+| project TimeGenerated, Computer, SourceIP, AcceptedUser, FailedCount, SyslogMessage
+| order by TimeGenerated desc

@@ -1,0 +1,12 @@
+// Title: High-Privilege Entra ID Role Assignment Audit
+// MITRE ATT&CK: T1098.003 (Additional Cloud Roles)
+// Data Source: AuditLogs
+AuditLogs
+| where TimeGenerated >= ago(7d)
+| where OperationName has_any ("Add member to role", "Add eligible member to role")
+| extend TargetUser = tostring(TargetResources[0].userPrincipalName)
+| extend AssignedRole = tostring(TargetResources[0].modifiedProperties[1].newValue)
+| extend InitiatedByUser = tostring(InitiatedBy.user.userPrincipalName)
+| where AssignedRole has_any ("Global Administrator", "Privileged Role Administrator", "Security Administrator", "Intune Administrator", "Exchange Administrator")
+| project TimeGenerated, OperationName, AssignedRole, TargetUser, InitiatedByUser, Result
+| order by TimeGenerated desc

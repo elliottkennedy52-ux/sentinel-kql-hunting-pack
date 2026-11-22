@@ -1,0 +1,17 @@
+// Title: Intune Managed Endpoint Compliance & Encryption Drift
+// MITRE ATT&CK: T1562 (Impair Defenses)
+// Data Source: IntuneDeviceComplianceOrg
+IntuneDeviceComplianceOrg
+| where TimeGenerated >= ago(24h)
+| summarize arg_max(TimeGenerated, *) by DeviceId
+| where ComplianceState != "Compliant"
+| project
+    TimeGenerated,
+    DeviceName,
+    UPN,
+    OS,
+    OSVersion,
+    ComplianceState,
+    OwnerType,
+    LastContact
+| order by LastContact asc
